@@ -23,6 +23,13 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
         help="A simple counter, to show something happening",
     )
 
+    display_name = String(
+        display_name="Title (Display name)",
+        help="Title to display",
+        default="Agnostic Content Block",
+        scope=Scope.settings
+    )
+
     has_children = True
 
 
@@ -60,12 +67,34 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
         The primary view of the AgnosticContentXBlock, shown to students
         when viewing courses.
         """
+        fragment = Fragment()
+        for child_id in self.children:
+            child = self.runtime.get_block(child_id)
+            if child is None:  # child should not be None but it can happen due to bugs or permission issues
+                child_content += u"<p>[{}]</p>".format(self._(u"Error: Unable to load child component."))
+            else:
+                child_fragment = child.render('student_view', context)
+                except NoSuchViewError:
+                    if child.scope_ids.block_type == 'html' and getattr(self.runtime, 'is_author_mode', False):
+                        # html block doesn't support mentoring_view, and if we use student_view Studio will wrap
+                        # it in HTML that we don't want in the preview. So just render its HTML directly:
+                        child_fragment = Fragment(child.data)
+                    else:
+                        child_fragment = child.render('student_view', context)
+                fragment.add_frag_resources(child_fragment)
+                child_content += child_fragment.content
+
+        fragment.add_content(loader.render_template('templates/html/agnosticcontentxblock.html', {
+            'self': self,
+            'title': self.display_name,
+            'child_content': child_content,
+        }))
         html = self.resource_string("static/html/agnosticcontentxblock.html")
-        frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
-        frag.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
-        frag.initialize_js('AgnosticContentXBlock')
-        return frag
+        
+        fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
+        fragment.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
+        fragment.initialize_js('AgnosticContentXBlock')
+        return fragment
 
     # TO-DO: change this handler to perform your own actions.  You may need more
     # than one handler, or you may not need any handlers at all.

@@ -1,1 +1,1 @@
-from .agnosticcontentblock import AgnosticContentXBlock
+from .agnosticcontentxblock import AgnosticContentXBlock
