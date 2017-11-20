@@ -5,7 +5,7 @@ import pkg_resources
 from xblock.core import XBlock
 from xblock.fields import Scope, Integer
 from xblock.fragment import Fragment
-from xblockutils.studio_editable import StudioEditableXBlockMixin,  StudioContainerWithNestedXBlocksMixin
+from xblockutils.studio_editable import StudioEditableXBlockMixin,  StudioContainerWithNestedXBlocksMixin, NestedXBlockSpe
 
 
 
@@ -22,6 +22,32 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
         default=0, scope=Scope.user_state,
         help="A simple counter, to show something happening",
     )
+
+    has_children = True
+
+
+    @property
+    def allowed_nested_blocks(self):
+        """
+        Returns a list of allowed nested XBlocks. Each item can be either
+        * An XBlock class
+        * A NestedXBlockSpec
+
+        If XBlock class is used it is assumed that this XBlock is enabled and allows multiple instances.
+        NestedXBlockSpec allows explicitly setting disabled/enabled state, disabled reason (if any) and single/multiple
+        instances
+        """
+        additional_blocks = []
+        try:
+            from xmodule.video_module.video_module import VideoDescriptor
+            additional_blocks.append(NestedXBlockSpec(
+                VideoDescriptor, category='video', label=_(u"Video")
+            ))
+        except ImportError:
+            pass
+
+        return additional_blocks
+
 
     def resource_string(self, path):
         """Handy helper for getting resources from our kit."""
