@@ -60,10 +60,10 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
         The primary view of the AgnosticContentXBlock, shown to students
         when viewing courses.
         """
-        html = self.resource_string("static/html/agnosticcontentblock.html")
+        html = self.resource_string("static/html/agnosticcontentxblock.html")
         frag = Fragment(html.format(self=self))
-        frag.add_css(self.resource_string("static/css/agnosticcontentblock.css"))
-        frag.add_javascript(self.resource_string("static/js/src/agnosticcontentblock.js"))
+        frag.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
+        frag.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
         frag.initialize_js('AgnosticContentXBlock')
         return frag
 
@@ -87,13 +87,13 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
         """A canned scenario for display in the workbench."""
         return [
             ("AgnosticContentXBlock",
-             """<agnosticcontentblock/>
+             """<agnosticcontentxblock/>
              """),
             ("Multiple AgnosticContentXBlock",
              """<vertical_demo>
-                <agnosticcontentblock/>
-                <agnosticcontentblock/>
-                <agnosticcontentblock/>
+                <agnosticcontentxblock/>
+                <agnosticcontentxblock/>
+                <agnosticcontentxblock/>
                 </vertical_demo>
              """),
         ]
