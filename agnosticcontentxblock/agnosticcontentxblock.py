@@ -3,7 +3,7 @@
 import pkg_resources
 
 from xblock.core import XBlock
-from xblock.fields import Scope, Integer
+from xblock.fields import Scope, Integer, String
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin,  StudioContainerWithNestedXBlocksMixin, NestedXBlockSpec
 
@@ -48,7 +48,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		try:
 			from xmodule.video_module.video_module import VideoDescriptor
 			additional_blocks.append(NestedXBlockSpec(
-				VideoDescriptor, category='video', label=_(u"Video")
+				VideoDescriptor, category='video', label=u"Video"
 			))
 		except ImportError:
 			pass
