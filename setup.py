@@ -1,4 +1,4 @@
-"""Setup for agnosticcontentblock XBlock."""
+"""Setup for agnosticcontentxblock XBlock."""
 
 import os
 from setuptools import setup
@@ -21,20 +21,20 @@ def package_data(pkg, roots):
 
 
 setup(
-    name='agnosticcontentblock-xblock',
+    name='agnostic-content-xblock',
     version='0.1',
-    description='agnosticcontentblock XBlock',   # TODO: write a better description.
+    description='Agnostic Content XBlock',   # TODO: write a better description.
     license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
     packages=[
-        'agnosticcontentblock',
+        'agnosticcontentxblock',
     ],
     install_requires=[
         'XBlock',
     ],
     entry_points={
         'xblock.v1': [
-            'agnosticcontentblock = agnosticcontentblock:AgnosticContentXBlock',
+            'agnosticcontentxblock = agnosticcontentxblock:AgnosticContentXBlock',
         ]
     },
-    package_data=package_data("agnosticcontentblock", ["static", "public"]),
+    package_data=package_data("agnosticcontentxblock", ["static", "public"]),
 )

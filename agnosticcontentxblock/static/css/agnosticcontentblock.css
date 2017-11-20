@@ -1,0 +1,9 @@
+/* CSS for AgnosticContentXBlock */
+
+.agnosticcontentblock_block .count {
+    font-weight: bold;
+}
+
+.agnosticcontentblock_block p {
+    cursor: pointer;
+}
