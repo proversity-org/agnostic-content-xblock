@@ -72,7 +72,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		data = pkg_resources.resource_string(__name__, path)
 		return data.decode("utf8")
 
-	# TO-DO: change this view to display your data your own way.
+	@XBlock.supports("multi_device") # mobile friendly
 	def student_view(self, context=None):
 		"""
 		The primary view of the AgnosticContentXBlock, shown to students
@@ -83,7 +83,9 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		for child_id in self.children:
 			try:
 				child = self.runtime.get_block(child_id)
-				child_content = "success"
+				child_fragment = child.render('student_view', context)
+				fragment.add_frag_resources(child_fragment)
+				child_content += child_fragment.content
 			except: # child should not be None but it can happen due to bugs or permission issues
 				child_content += u"<p>[{}]</p>".format(self._(u"Error: Unable to load child component."))
 	
@@ -92,7 +94,6 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			'title': self.display_name,
 			'child_content': child_content,
 		}))
-		html = self.resource_string("static/html/agnosticcontentxblock.html")
 		
 		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
 		fragment.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
