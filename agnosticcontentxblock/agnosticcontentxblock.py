@@ -1,11 +1,15 @@
 """TO-DO: Write a description of what this XBlock is."""
 
 import pkg_resources
+from xblockutils.resources import ResourceLoader
 
+import logging
 from xblock.core import XBlock
 from xblock.fields import Scope, Integer, String
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin,  StudioContainerWithNestedXBlocksMixin, NestedXBlockSpec
+logger = logging.getLogger(__name__)
+loader = ResourceLoader(__name__)
 
 
 
@@ -52,6 +56,13 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			))
 		except ImportError:
 			pass
+		try:
+			from recap import RecapXBlock
+			additional_blocks.append(NestedXBlockSpec(
+				RecapXBlock, category='recap', label=u"Recap"
+			))
+		except ImportError:
+			pass
 
 		return additional_blocks
 
@@ -76,7 +87,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			except: # child should not be None but it can happen due to bugs or permission issues
 				child_content += u"<p>[{}]</p>".format(self._(u"Error: Unable to load child component."))
 	
-		fragment.add_content(loader.render_template('templates/html/agnosticcontentxblock.html', {
+		fragment.add_content(loader.render_template('static/html/agnosticcontentxblock.html', {
 			'self': self,
 			'title': self.display_name,
 			'child_content': child_content,
