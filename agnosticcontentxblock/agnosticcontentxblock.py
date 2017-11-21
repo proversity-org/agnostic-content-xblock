@@ -87,7 +87,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 				fragment.add_frag_resources(child_fragment)
 				child_content += child_fragment.content
 			except: # child should not be None but it can happen due to bugs or permission issues
-				child_content += u"<p>[{}]</p>".format(self._(u"Error: Unable to load child component."))
+				child_content += u"<p>[{}]</p>".format(u"Error: Unable to load child component.")
 	
 		fragment.add_content(loader.render_template('static/html/agnosticcontentxblock.html', {
 			'self': self,
@@ -96,7 +96,10 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		}))
 		
 		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
-		fragment.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
+		#fragment.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
+		fragment.add_javascript(self.resource_string("public/js/agnosticcontentxblock.js"))
+		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
+
 		fragment.initialize_js('AgnosticContentXBlock')
 		return fragment
 
