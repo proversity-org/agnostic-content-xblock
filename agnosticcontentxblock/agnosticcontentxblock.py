@@ -5,7 +5,7 @@ from xblockutils.resources import ResourceLoader
 
 import logging
 from xblock.core import XBlock
-from xblock.fields import Scope, Integer, String
+from xblock.fields import Scope, Integer, String, Boolean
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin,  StudioContainerWithNestedXBlocksMixin, NestedXBlockSpec
 logger = logging.getLogger(__name__)
@@ -34,6 +34,12 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		scope=Scope.settings
 	)
 
+	use_latex_compiler = Boolean(
+        help="Enable LaTeX templates?",
+        default=False,
+        scope=Scope.settings
+    )
+
 	has_children = True
 
 
@@ -53,6 +59,13 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			from xmodule.video_module.video_module import VideoDescriptor
 			additional_blocks.append(NestedXBlockSpec(
 				VideoDescriptor, category='video', label=u"Video"
+			))
+		except ImportError:
+			pass
+		try:
+			from xmodule.html_module import HtmlDescriptor
+			additional_blocks.append(NestedXBlockSpec(
+				HtmlDescriptor, category='html', label=u"HTML"
 			))
 		except ImportError:
 			pass
