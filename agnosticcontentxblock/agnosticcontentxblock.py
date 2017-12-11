@@ -76,6 +76,21 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			))
 		except ImportError:
 			pass
+		try:
+			from google_drive.google_docs import GoogleDocumentBlock
+			additional_blocks.append(NestedXBlockSpec(
+				GoogleDocumentBlock, category='google-document', label=u"Google-doc"
+			))
+		except ImportError:
+			pass
+
+		try:
+			from xblock_discussion import DiscussionXBlock
+			additional_blocks.append(NestedXBlockSpec(
+				DiscussionXBlock, category='discussion-forum', label=u'Discussion'
+			))
+		except ImportError:
+			pass
 
 		return additional_blocks
 
