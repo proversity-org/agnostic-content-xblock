@@ -87,7 +87,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		try:
 			from xblock_discussion import DiscussionXBlock
 			additional_blocks.append(NestedXBlockSpec(
-				DiscussionXBlock, category='xblock-discussion', label=u'Discussion'
+				DiscussionXBlock, category='discussion', label=u'Discussion'
 			))
 		except ImportError:
 			pass
