@@ -70,6 +70,13 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		except ImportError:
 			pass
 		try:
+			from xmodule.capa_module import CapaDescriptor
+			additional_blocks.append(NestedXBlockSpec(
+				CapaDescriptor, category='problem', label=u"CapaProblem"
+			))
+		except ImportError:
+			pass
+		try:
 			from recap import RecapXBlock
 			additional_blocks.append(NestedXBlockSpec(
 				RecapXBlock, category='recap', label=u"Recap"
