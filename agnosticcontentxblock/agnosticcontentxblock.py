@@ -77,7 +77,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		except ImportError:
 			pass
 		try:
-			from pdf import PdfBlock
+			from pdf.pdf import PdfBlock
 			additional_blocks.append(NestedXBlockSpec(
 				PdfBlock, category='pdf', label=u"PDF"
 			))
