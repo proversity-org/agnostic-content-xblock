@@ -77,11 +77,12 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		except ImportError:
 			pass
 		try:
-			from recap import RecapXBlock
+			from pdf import PdfBlock
 			additional_blocks.append(NestedXBlockSpec(
-				RecapXBlock, category='recap', label=u"Recap"
+				PdfBlock, category='pdf', label=u"PDF"
 			))
 		except ImportError:
+			logger.warn('Could not import PdfBlock')
 			pass
 		try:
 			from google_drive.google_docs import GoogleDocumentBlock
@@ -90,7 +91,6 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			))
 		except ImportError:
 			pass
-
 		try:
 			from xblock_discussion import DiscussionXBlock
 			additional_blocks.append(NestedXBlockSpec(
