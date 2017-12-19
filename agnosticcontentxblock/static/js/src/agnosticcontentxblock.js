@@ -1,9 +1,6 @@
 /* Javascript for AgnosticContentXBlock. */
 function AgnosticContentXBlock(runtime, element) {
 
-    function updateCount(result) {
-        $('.count', element).text(result.count);
-    }
 
     function updateVotes(votes) {
         $('.upvote .count', element).text(votes.up);
@@ -32,7 +29,6 @@ function AgnosticContentXBlock(runtime, element) {
 
 
     var children = runtime.children(element);
-    var handlerUrl = runtime.handlerUrl(element, 'increment_count');
 
     $('p', element).click(function(eventObject) {
         $.ajax({
