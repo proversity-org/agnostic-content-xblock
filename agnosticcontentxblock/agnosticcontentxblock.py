@@ -23,11 +23,11 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 
 	# TO-DO: delete count, and define your own fields.
 	upvotes = Integer(help="Number of up votes", default=0,
-        scope=Scope.user_state_summary)
-    downvotes = Integer(help="Number of down votes", default=0,
-        scope=Scope.user_state_summary)
-    voted = Boolean(help="Has this student voted?", default=False,
-        scope=Scope.user_state)
+		scope=Scope.user_state_summary)
+	downvotes = Integer(help="Number of down votes", default=0,
+		scope=Scope.user_state_summary)
+	voted = Boolean(help="Has this student voted?", default=False,
+		scope=Scope.user_state)
 
 	count = Integer(
 		default=0, scope=Scope.user_state,
@@ -42,10 +42,10 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 	)
 
 	use_latex_compiler = Boolean(
-        help="Enable LaTeX templates?",
-        default=False,
-        scope=Scope.settings
-    )
+		help="Enable LaTeX templates?",
+		default=False,
+		scope=Scope.settings
+	)
 
 	has_children = True
 	#show_in_read_only_mode = True
@@ -136,6 +136,8 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			'self': self,
 			'title': self.display_name,
 			'child_content': child_content,
+			'upvotes':self.upvotes,
+			'downvotes': self.downvotes
 		}))
 		
 		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
@@ -161,25 +163,25 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 
 	@XBlock.json_handler
 	def vote(self, data, suffix=''):  # pylint: disable=unused-argument
-	    """
-	    Update the vote count in response to a user action.
-	    """
-	    # Here is where we would prevent a student from voting twice, but then
-	    # we couldn't click more than once in the demo!
-	    #
-	    #     if self.voted:
-	    #         log.error("cheater!")
-	    #         return
+		"""
+		Update the vote count in response to a user action.
+		"""
+		# Here is where we would prevent a student from voting twice, but then
+		# we couldn't click more than once in the demo!
+		#
+		#     if self.voted:
+		#         log.error("cheater!")
+		#         return
 	
-	    if data['voteType'] not in ('up', 'down'):
-	        log.error('error!')
-	        return
-    	if data['voteType'] == 'up':
-        	self.upvotes += 1
-    	else:
-        	self.downvotes += 1
-    	self.voted = True
-    	return {'up': self.upvotes, 'down': self.downvotes}
+		if data['voteType'] not in ('up', 'down'):
+			log.error('error!')
+			return
+		if data['voteType'] == 'up':
+			self.upvotes += 1
+		else:
+			self.downvotes += 1
+		self.voted = True
+		return {'up': self.upvotes, 'down': self.downvotes}
 
 	# TO-DO: change this to create the scenarios you'd like to see in the
 	# workbench while developing your XBlock.
