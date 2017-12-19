@@ -140,11 +140,8 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			'downvotes': self.downvotes
 		}))
 		
-		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
-		#fragment.add_javascript(self.resource_string("static/js/src/agnosticcontentxblock.js"))
-		fragment.add_javascript(self.resource_string("public/js/agnosticcontentxblock.js"))
+		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))	
 		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
-
 		fragment.initialize_js('AgnosticContentXBlock')
 		return fragment
 

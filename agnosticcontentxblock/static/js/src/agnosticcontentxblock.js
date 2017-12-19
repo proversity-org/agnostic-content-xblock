@@ -22,22 +22,13 @@ function AgnosticContentXBlock(runtime, element) {
       $.ajax({
           type: "POST",
           url: handlerUrl,
-          data: JSON.stringify({voteType: 'down'}),
+          data: JSON.stringify({voteType: 'down'})
           success: updateVotes
       });
     });
 
 
     var children = runtime.children(element);
-
-    $('p', element).click(function(eventObject) {
-        $.ajax({
-            type: "POST",
-            url: handlerUrl,
-            data: JSON.stringify({"hello": "world"}),
-            success: updateCount
-        });
-    });
 
     $(function ($) {
         /* Here's where you'd do things on page load. */
