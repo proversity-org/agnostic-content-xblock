@@ -154,9 +154,9 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		# Here is where we would prevent a student from voting twice, but then
 		# we couldn't click more than once in the demo!
 		#
-		#     if self.voted:
-		#         log.error("cheater!")
-		#         return
+		if self.voted:
+		   log.error("cheater!")
+		   return
 	
 		if data['voteType'] not in ('up', 'down'):
 			log.error('error!')
