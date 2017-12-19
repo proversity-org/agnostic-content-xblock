@@ -41,10 +41,8 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
     )
 
 	has_children = True
-
-	editable_fields = (
-        'display_name'
-    )
+	#show_in_read_only_mode = True
+	editable_fields = ('display_name',)
 
 	@property
 	def allowed_nested_blocks(self):
