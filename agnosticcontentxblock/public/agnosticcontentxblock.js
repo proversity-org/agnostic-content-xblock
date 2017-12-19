@@ -30,7 +30,9 @@ function AgnosticContentXBlock(runtime, element) {
       });
     });
 
-
+    function updateCount(result) {
+        $('.count', element).text(result.count);
+    }
     var children = runtime.children(element);
     var handlerUrl = runtime.handlerUrl(element, 'increment_count');
 
