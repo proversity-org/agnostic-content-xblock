@@ -108,7 +108,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			pass
 		try:
 			from bibblio import BibblioXBlock
-			additional_blocks.appened(NestedXBlockSpec(
+			additional_blocks.append(NestedXBlockSpec(
 				BibblioXBlock, category='bibblio', label=u'Bibblio'
 			))
 		except ImportError:
