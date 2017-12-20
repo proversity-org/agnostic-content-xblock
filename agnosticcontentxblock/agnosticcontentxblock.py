@@ -106,6 +106,14 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			))
 		except ImportError:
 			pass
+		try:
+			from bibblio import BibblioXBlock
+			additional_blocks.appened(NestedXBlockSpec(
+				BibblioXBlock, category='bibblio', label=u'Bibblio'
+			))
+		except ImportError:
+			pass
+
 
 		return additional_blocks
 
@@ -148,7 +156,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 
 	@XBlock.json_handler
 	def vote(self, data, suffix=''):  # pylint: disable=unused-argument
-		"""
+		"""exi
 		Update the vote count in response to a user action.
 		"""
 		# Here is where we would prevent a student from voting twice, but then
