@@ -22,11 +22,22 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 	# self.<fieldname>.
 
 	# TO-DO: delete count, and define your own fields.
-	upvotes = Integer(help="Number of up votes", default=0,
+
+	block_id = String(
+        display_name=_('ID'),
+        help=_('The ID of the Free Text Response XBlock'),
+        scope=Scope.settings,
+    )
+    
+	upvotes = Integer(help="Number of total up votes", default=0,
 		scope=Scope.user_state_summary)
-	downvotes = Integer(help="Number of down votes", default=0,
+	downvotes = Integer(help="Number of total down votes", default=0,
 		scope=Scope.user_state_summary)
-	voted = Boolean(help="Has this student voted?", default=False,
+
+	upvoted = Boolean(help="Has this student voted up?", default=False,
+		scope=Scope.user_state)
+	
+	downvoted = Boolean(help="Has this student voted down?", default=False,
 		scope=Scope.user_state)
 
 	count = Integer(
@@ -162,16 +173,18 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		# Here is where we would prevent a student from voting twice, but then
 		# we couldn't click more than once in the demo!
 		#
-		if self.voted:
-		   log.error("cheater!")
+		if self.upvoted or self.downvoted:
+		   logger.error("A user may not have more than one opportunity to vote")
 		   return
 	
 		if data['voteType'] not in ('up', 'down'):
-			log.error('error!')
+			logger.error('error!')
 			return
 		if data['voteType'] == 'up':
+			self.upvoted = True
 			self.upvotes += 1
 		else:
+			self.downvoted = True
 			self.downvotes += 1
 		self.voted = True
 		return {'up': self.upvotes, 'down': self.downvotes}
