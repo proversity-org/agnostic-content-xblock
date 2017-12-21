@@ -24,11 +24,11 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 	# TO-DO: delete count, and define your own fields.
 
 	block_id = String(
-        display_name=_('ID'),
-        help=_('The ID of the Free Text Response XBlock'),
+        display_name='ID',
+        help='The ID of the Free Text Response XBlock',
         scope=Scope.settings,
     )
-    
+
 	upvotes = Integer(help="Number of total up votes", default=0,
 		scope=Scope.user_state_summary)
 	downvotes = Integer(help="Number of total down votes", default=0,
