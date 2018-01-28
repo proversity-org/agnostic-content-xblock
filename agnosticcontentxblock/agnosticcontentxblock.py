@@ -167,8 +167,10 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		}))
 
 		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
+		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/vertical_student_view.js'))
 		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
 		fragment.initialize_js('AgnosticContentXBlock')
+		fragment.initialize_js('VerticalStudentView')
 		return fragment
 
 
