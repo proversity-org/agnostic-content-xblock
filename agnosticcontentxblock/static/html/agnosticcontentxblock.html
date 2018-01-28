@@ -7,7 +7,11 @@
 	    aria-pressed="{{ is_bookmarked|yesno:'true,false' }}"
 	    data-bookmark-id="{{bookmark_id}}"
 	    data-bookmarks-api-url="{% url 'bookmarks' %}">
-	     <span class="bookmark-text">{% trans is_bookmarked|yesno,"Bookmarked,'Bookmark this page'" %}</span>
+	    	{% if is_bookmarked %}
+	      <span class="bookmark-text">{% trans "Bookmarked" %}</span>
+	      {% else %}
+	      <span class="bookmark-text">{% trans "Bookmark this content" %}</span>
+	      {% endif %}
 	    </button>
 	</div>
 
