@@ -162,7 +162,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			'upvotes':self.upvotes,
 			'downvotes': self.downvotes,
 			'show_bookmark_button': True,
-			'bookmarked': bookmarks_service.is_bookmarked(usage_key=self.location),
+			'is_bookmarked': bookmarks_service.is_bookmarked(usage_key=self.location),
 			'bookmark_id': u"{},{}".format(username, unicode(self.location))
 		}))
 
