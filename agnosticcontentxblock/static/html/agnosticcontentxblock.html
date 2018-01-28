@@ -1,4 +1,9 @@
 <div class="agnosticcontentblock_block">
+
+	% if show_bookmark_button:
+	<%include file='bookmark_button.html' args="bookmark_id=bookmark_id, is_bookmarked=bookmarked"/>
+	% endif
+
   {{child_content|safe}}
 
   <p>

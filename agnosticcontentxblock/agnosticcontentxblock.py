@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
 
 
-
+@XBlock.needs('user', 'bookmarks')
 class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditableXBlockMixin, XBlock):
 	"""
 	TO-DO: document what your XBlock does.
@@ -24,10 +24,10 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 	# TO-DO: delete count, and define your own fields.
 
 	block_id = String(
-        display_name='ID',
-        help='The ID of the Free Text Response XBlock',
-        scope=Scope.settings,
-    )
+		display_name='ID',
+		help='The ID of the Free Text Response XBlock',
+		scope=Scope.settings,
+	)
 
 	upvotes = Integer(help="Number of total up votes", default=0,
 		scope=Scope.user_state_summary)
@@ -36,7 +36,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 
 	upvoted = Boolean(help="Has this student voted up?", default=False,
 		scope=Scope.user_state)
-	
+
 	downvoted = Boolean(help="Has this student voted down?", default=False,
 		scope=Scope.user_state)
 
@@ -150,16 +150,23 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 				child_content += child_fragment.content
 			except: # child should not be None but it can happen due to bugs or permission issues
 				child_content += u"<p>[{}]</p>".format(u"Error: Unable to load child component.")
-	
+
+		bookmarks_service = self.runtime.service(self, 'bookmarks')
+		user_service = self.runtime.service(self, 'user')
+		username = user_service.get_current_user().opt_attrs['edx-platform.username']
+
 		fragment.add_content(loader.render_template('static/html/agnosticcontentxblock.html', {
 			'self': self,
 			'title': self.display_name,
 			'child_content': child_content,
 			'upvotes':self.upvotes,
-			'downvotes': self.downvotes
+			'downvotes': self.downvotes,
+			'show_bookmark_button': true,
+			'bookmarked': bookmarks_service.is_bookmarked(usage_key=self.location),
+			'bookmark_id': u"{},{}".format(username, unicode(self.location))
 		}))
-		
-		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))	
+
+		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
 		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
 		fragment.initialize_js('AgnosticContentXBlock')
 		return fragment
@@ -176,7 +183,7 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		if self.upvoted or self.downvoted:
 		   logger.error("A user may not have more than one opportunity to vote")
 		   return
-	
+
 		if data['voteType'] not in ('up', 'down'):
 			logger.error('error!')
 			return
