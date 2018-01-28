@@ -1,8 +1,15 @@
+{% load i18n %}
+
 <div class="agnosticcontentblock_block">
 
-	% if show_bookmark_button:
-	<%include file='bookmark_button.html' args="bookmark_id=bookmark_id, is_bookmarked=bookmarked"/>
-	% endif
+	<div class="bookmark-button-wrapper">
+	  <button class="btn btn-link bookmark-button {{ is_bookmarked|yesno:'bookmarked,' }}"
+	    aria-pressed="{{ is_bookmarked|yesno:'true,false' }}"
+	    data-bookmark-id="{{bookmark_id}}"
+	    data-bookmarks-api-url="{% url 'bookmarks' %}">
+	     <span class="bookmark-text">{% trans is_bookmarked|yesno,"Bookmarked,Bookmark this page" %}</span>
+	    </button>
+	</div>
 
   {{child_content|safe}}
 
