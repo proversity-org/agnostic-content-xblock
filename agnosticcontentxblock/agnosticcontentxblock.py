@@ -164,14 +164,14 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			'show_bookmark_button': True,
 			'is_bookmarked': bookmarks_service.is_bookmarked(usage_key=self.location),
 			'bookmark_id': u"{},{}".format(username, unicode(self.location)),
-			'location': unicode(self.location)
+			'block_usage_id': unicode(self.location.block_id)
 		}))
 
 		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
 		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
 		fragment.initialize_js('AgnosticContentXBlock')
 
-		fragment.initialize_js('VerticalStudentView', { 'selector':'#bookmark-'+unicode(self.location) })
+		fragment.initialize_js('VerticalStudentView', { 'selector':'#bookmark-'+unicode(self.location.block_id) })
 
 		return fragment
 

@@ -3,7 +3,7 @@
 <div class="agnosticcontentblock_block">
 
 	<div class="bookmark-button-wrapper">
-	  <button id="bookmark-{{location}}" class="btn btn-link bookmark-button {{ is_bookmarked|yesno:'bookmarked,' }}"
+	  <button id="bookmark-{{block_usage_id}}" class="btn btn-link bookmark-button {{ is_bookmarked|yesno:'bookmarked,' }}"
 	    aria-pressed="{{ is_bookmarked|yesno:'true,false' }}"
 	    data-bookmark-id="{{bookmark_id}}"
 	    data-bookmarks-api-url="{% url 'bookmarks' %}">
@@ -23,8 +23,7 @@
 	</p>
 </div>
 
-<!-- @TODO: Move this to stylesheets (and body class?)
--->
+<!-- @TODO: Move this to stylesheets (and body class?) -->
 <style type="text/css">
 	body.view-in-course .wrapper-course-material { display: none; }
 	.content-wrapper .page-header { display: none; }
