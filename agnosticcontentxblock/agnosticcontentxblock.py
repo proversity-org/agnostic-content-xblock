@@ -170,7 +170,6 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
 		fragment.initialize_js('AgnosticContentXBlock')
 
-		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/vertical_student_view.js'))
 		fragment.initialize_js('VerticalStudentView', { 'selector':'#agnosticcontentblock-bookmark-button' })
 
 		return fragment
