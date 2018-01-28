@@ -7,14 +7,14 @@
 	    aria-pressed="{{ is_bookmarked|yesno:'true,false' }}"
 	    data-bookmark-id="{{bookmark_id}}"
 	    data-bookmarks-api-url="{% url 'bookmarks' %}">
-	     <span class="bookmark-text">{% trans is_bookmarked|yesno,"Bookmarked,Bookmark this page" %}</span>
+	     <span class="bookmark-text">{% trans is_bookmarked|yesno,"Bookmarked,'Bookmark this page'" %}</span>
 	    </button>
 	</div>
 
   {{child_content|safe}}
 
   <p>
-  <span class='upvote'><span class='count'>{{upvotes}}</span>&uarr;</span>
-  <span class='downvote'><span class='count'>{{downvotes}}</span>&darr;</span>
-</p>
+  	<span class='upvote'><span class='count'>{{upvotes}}</span>&uarr;</span>
+	  <span class='downvote'><span class='count'>{{downvotes}}</span>&darr;</span>
+	</p>
 </div>
