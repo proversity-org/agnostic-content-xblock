@@ -5,6 +5,7 @@
 	<div class="bookmark-button-wrapper">
 	  <button id="bookmark-{{block_usage_id}}" class="btn btn-link bookmark-button {{ is_bookmarked|yesno:'bookmarked,' }}"
 	    aria-pressed="{{ is_bookmarked|yesno:'true,false' }}"
+	    data-is-bookmarked="{{is_bookmarked}}"
 	    data-bookmark-id="{{bookmark_id}}"
 	    data-bookmarks-api-url="{% url 'bookmarks' %}">
 	    	{% if is_bookmarked %}
