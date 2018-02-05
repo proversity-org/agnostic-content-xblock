@@ -59,4 +59,11 @@ section[role="courses"] .container .grid .single-course { position: relative; }
   });
 </script>
 
+% else:
+
+<div>
+  <h2>${_("No subscription content available")}</h2>
+  <p>${_("Unfortunately we are still populating this catalog. Please come back soon.")}</p>
+</div>
+
 % endif

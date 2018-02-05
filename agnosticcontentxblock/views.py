@@ -45,10 +45,11 @@ def render_to_response(template_path, context):
 @ensure_csrf_cookie
 def dashboard(request):
     context = get_subscription_content_items(request)
-    context['bookmarks'] = get_bookmarked_items(request, context['content_items'])
-    context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
-    source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
-    context['recommendations'] = get_recommeded_content_items(request, context['content_items'], source)
+    if context['content_items'] is not None:
+        context['bookmarks'] = get_bookmarked_items(request, context['content_items'])
+        context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
+        source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
+        context['recommendations'] = get_recommeded_content_items(request, context['content_items'], source)
     response = render_to_response('subscription_content/dashboard.html', context)
     set_user_info_cookie(response, request)
     return response
@@ -57,11 +58,12 @@ def dashboard(request):
 @login_required
 def explore(request):
     context = get_subscription_content_items(request)
-    context['bookmarks'] = get_bookmarked_items(request, context['content_items'])
-    context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
-    source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
-    context['recommendations'] = get_recommeded_content_items(request, context['content_items'], source)
-    context['popular'] = get_popular_items(request, context['viewed'])
+    if context['content_items'] is not None:
+        context['bookmarks'] = get_bookmarked_items(request, context['content_items'])
+        context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
+        source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
+        context['recommendations'] = get_recommeded_content_items(request, context['content_items'], source)
+        context['popular'] = get_popular_items(request, context['viewed'])
     response = render_to_response('subscription_content/explore.html', context)
     set_user_info_cookie(response, request)
     return response

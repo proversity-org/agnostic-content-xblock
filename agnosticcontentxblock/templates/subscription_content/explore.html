@@ -12,7 +12,7 @@ from openedx.core.djangoapps.theming.helpers import get_template_path
 
       <h1 style="margin-bottom:30px">${_("Explore Content")}</h1>
 
-      % if content_items:
+    % if content_items:
 
       <link type="text/css" rel="stylesheet" href="/static/lightslider/css/lightslider.css" />
       <script src="/static/lightslider/js/lightslider.js"></script>
@@ -112,6 +112,13 @@ from openedx.core.djangoapps.theming.helpers import get_template_path
         });
       </script>
       % endfor
+
+    % else:
+
+      <div>
+        <h2>${_("No subscription content available")}</h2>
+        <p>${_("Unfortunately we are still populating this catalog. Please come back soon.")}</p>
+      </div>
 
     % endif
 
