@@ -17,7 +17,7 @@ section[role="courses"] .container .grid .single-course { position: relative; }
 </style>
 
 <h1 style="margin-bottom:30px">${_("My Content")}
-  <span><a href="${reverse('subscription_explore')}">${_("View all")}</a></span>
+  <a href="${reverse('subscription_explore')}" style="font-size:14px;vertical-align:middle;">${_("View all")}</a>
 </h1>
 
 % if recommendations:
@@ -37,17 +37,17 @@ section[role="courses"] .container .grid .single-course { position: relative; }
   </script>
 % endif
 
-<script type="text/javascript">
-  $(window).ready(function() {
-    $("#content-slider-all").lightSlider({ item: 4, adaptiveHeight: true });
-  });
-</script>
+  <script type="text/javascript">
+    $(window).ready(function() {
+      $("#content-slider-all").lightSlider({ item: 4, adaptiveHeight: true });
+    });
+  </script>
 
 % else:
 
-<div>
-  <h2>${_("No subscription content available")}</h2>
-  <p>${_("Unfortunately we are still populating this catalog. Please come back soon.")}</p>
-</div>
+  <div>
+    <h2>${_("No subscription content available")}</h2>
+    <p>${_("Unfortunately we are still populating this catalog. Please come back soon.")}</p>
+  </div>
 
 % endif
