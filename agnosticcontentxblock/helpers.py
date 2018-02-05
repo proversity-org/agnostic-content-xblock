@@ -137,6 +137,7 @@ def get_viewed_items(request, content_items):
     last_viewed = None
     course_keys = get_course_keys(request.user)
     for course_key in course_keys:
+        update_course_in_cache(course_key)
         course_structure = get_course_in_cache(course_key)
         course_locator = CourseLocator.from_string(unicode(course_key))
         username = request.user.username
