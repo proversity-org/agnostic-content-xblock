@@ -5,7 +5,7 @@ window.AgnosticContentXBlock = function(runtime, element, args) {
       jQuery.ajax({
           type: "POST",
           url: handlerUrl,
-          data: JSON.stringify({ "like": true })
+          data: JSON.stringify({ "like": true }),
           success: function(data){
             text = data['likes']+' people liked this.'
             if(data['liked'])
