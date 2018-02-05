@@ -45,7 +45,7 @@ def render_to_response(template_path, context):
 @ensure_csrf_cookie
 def dashboard(request):
     context = get_subscription_content_items(request)
-    if context['content_items'] is not None:
+    if len(context['content_items'].keys()) > 0:
         context['bookmarks'] = get_bookmarked_items(request, context['content_items'])
         context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
         source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
@@ -58,7 +58,7 @@ def dashboard(request):
 @login_required
 def explore(request):
     context = get_subscription_content_items(request)
-    if context['content_items'] is not None:
+    if len(context['content_items'].keys()) > 0:
         context['bookmarks'] = get_bookmarked_items(request, context['content_items'])
         context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
         source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
