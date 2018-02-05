@@ -1,0 +1,28 @@
+<%page expression_filter="h" args="item" />
+
+<%!
+from django.utils.translation import ugettext as _
+%>
+
+<li class="items course single-course">
+  <a href="${item['url']}">
+    <img src="${item['thumbnail']['contentUrl']}" class="img-responsive" alt="${item['name']}" />
+  </a>
+  <div class="course-caption">
+    <div>
+      <a href="${item['url']}">
+        <h4>${item['name']}</h4>
+      </a>
+    </div>
+    <p class="course-description">
+      ${item['description']}
+    </p>
+    <p class="localized-datetime">
+      ${_("Approx.")}
+      <time datetime="${item['timeRequired']}">
+        ${item['timeRequired']}
+      </time>
+    </p>
+    <a href="${item['url']}" class="btn btn-default" style="height:40px;line-height:40px;">View Content</a>
+  </div>
+</li>

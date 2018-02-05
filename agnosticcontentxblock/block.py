@@ -1,13 +1,17 @@
 """TO-DO: Write a description of what this XBlock is."""
 
-import pkg_resources
-from xblockutils.resources import ResourceLoader
-
 import logging
+import pkg_resources
+
+from datetime import datetime
+from xmodule.modulestore.django import modulestore
 from xblock.core import XBlock
-from xblock.fields import Scope, Integer, String, Boolean
+from xblock.fields import Scope, Integer, String, Boolean, DateTime
 from xblock.fragment import Fragment
 from xblockutils.studio_editable import StudioEditableXBlockMixin,  StudioContainerWithNestedXBlocksMixin, NestedXBlockSpec
+from xblockutils.resources import ResourceLoader
+from openedx.core.djangoapps.content.course_overviews.models import CourseOverview
+
 logger = logging.getLogger(__name__)
 loader = ResourceLoader(__name__)
 
@@ -21,28 +25,40 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 	# Fields are defined on the class.  You can access them in your code as
 	# self.<fieldname>.
 
-	# TO-DO: delete count, and define your own fields.
-
 	block_id = String(
 		display_name='ID',
-		help='The ID of the Free Text Response XBlock',
+		help='The ID of the Agnostic Content XBlock',
 		scope=Scope.settings,
 	)
 
-	upvotes = Integer(help="Number of total up votes", default=0,
-		scope=Scope.user_state_summary)
-	downvotes = Integer(help="Number of total down votes", default=0,
-		scope=Scope.user_state_summary)
+	likes = Integer(
+		help="Number of total likes",
+		default=0,
+		scope=Scope.user_state_summary
+	)
 
-	upvoted = Boolean(help="Has this student voted up?", default=False,
-		scope=Scope.user_state)
+	liked = Boolean(
+		help="Has this student liked this yet?",
+		default=False,
+		scope=Scope.user_state
+	)
 
-	downvoted = Boolean(help="Has this student voted down?", default=False,
-		scope=Scope.user_state)
+	views = Integer(
+		help="How many times has this student seen this?",
+		default=0,
+		scope=Scope.user_state_summary
+	)
 
-	count = Integer(
-		default=0, scope=Scope.user_state,
-		help="A simple counter, to show something happening",
+	last_viewed = DateTime(
+		help="When did this student last see this?",
+		default=None,
+		scope=Scope.user_state
+	)
+
+	completed = Boolean(
+		help="Has this student completed this?",
+		default=False,
+		scope=Scope.user_state
 	)
 
 	display_name = String(
@@ -52,15 +68,21 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 		scope=Scope.settings
 	)
 
+	content_item_id = String(
+		display_name='Content Item ID',
+		help='The Bibblio Content Item ID represented',
+		default="",
+		scope=Scope.settings,
+	)
+
 	use_latex_compiler = Boolean(
 		help="Enable LaTeX templates?",
 		default=False,
 		scope=Scope.settings
 	)
 
+	editable_fields = ('display_name','content_item_id',)
 	has_children = True
-	#show_in_read_only_mode = True
-	editable_fields = ('display_name',)
 
 	@property
 	def allowed_nested_blocks(self):
@@ -159,8 +181,8 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 			'self': self,
 			'title': self.display_name,
 			'child_content': child_content,
-			'upvotes':self.upvotes,
-			'downvotes': self.downvotes,
+			'liked': self.liked,
+			'likes': self.likes,
 			'show_bookmark_button': True,
 			'is_bookmarked': bookmarks_service.is_bookmarked(usage_key=self.location),
 			'bookmark_id': u"{},{}".format(username, unicode(self.location)),
@@ -169,36 +191,32 @@ class AgnosticContentXBlock(StudioContainerWithNestedXBlocksMixin, StudioEditabl
 
 		fragment.add_css(self.resource_string("static/css/agnosticcontentxblock.css"))
 		fragment.add_javascript_url(self.runtime.local_resource_url(self, 'public/js/agnosticcontentxblock.js'))
+		fragment.initialize_js('VerticalStudentView', { 'selector':'#bookmark-'+unicode(self.location.block_id) })
 		fragment.initialize_js('AgnosticContentXBlock')
 
-		fragment.initialize_js('VerticalStudentView', { 'selector':'#bookmark-'+unicode(self.location.block_id) })
+		self.last_viewed = datetime.now()
+		self.views = self.views+1
 
 		return fragment
 
 
 	@XBlock.json_handler
-	def vote(self, data, suffix=''):  # pylint: disable=unused-argument
-		"""exi
-		Update the vote count in response to a user action.
+	def like(self, data, suffix=''):  # pylint: disable=unused-argument
+		"""
+		Update the likes count in response to a user action.
 		"""
 		# Here is where we would prevent a student from voting twice, but then
 		# we couldn't click more than once in the demo!
-		#
-		if self.upvoted or self.downvoted:
-		   logger.error("A user may not have more than one opportunity to vote")
-		   return
 
-		if data['voteType'] not in ('up', 'down'):
-			logger.error('error!')
-			return
-		if data['voteType'] == 'up':
-			self.upvoted = True
-			self.upvotes += 1
-		else:
-			self.downvoted = True
-			self.downvotes += 1
-		self.voted = True
-		return {'up': self.upvotes, 'down': self.downvotes}
+		if self.liked:
+			self.liked = False
+			self.likes -= 1
+		elif not self.liked:
+			self.liked = True
+			self.likes += 1
+
+		return { 'likes': self.likes, 'liked': self.liked }
+
 
 	# TO-DO: change this to create the scenarios you'd like to see in the
 	# workbench while developing your XBlock.

@@ -1,0 +1,62 @@
+<%page expression_filter="h"/>
+
+<%!
+from django.utils.translation import ugettext as _
+%>
+
+% if content_items:
+
+<link type="text/css" rel="stylesheet" href="/static/lightslider/css/lightslider.css" />
+<script src="/static/lightslider/js/lightslider.js"></script>
+
+<style type="text/css">
+.course-caption h4 { min-height: 40px; }
+.course-description { max-height:80px;line-height:1.6;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3; }
+section[role="courses"] .container .grid .single-course { position: relative; }
+</style>
+
+<h1 style="margin-bottom:30px">${_("My Content")}</h1>
+
+% if recommendations:
+  <div style="margin-bottom:30px;">
+    <h2>${_('Recommended for You')} (${len(recommendations)})</h2>
+    <ul id="content-slider-recommendations">
+    % for item in [ content_items[item_id] for item_id in recommendations ]:
+      % if item['thumbnail']:
+      <%include file="templates/subscription_content/panel.html" args="item=item" />
+      % endif
+    % endfor
+    </ul>
+  </div>
+  <script type="text/javascript">
+    $(window).ready(function() {
+      $("#content-slider-recommendations").lightSlider({ item: 4, adaptiveHeight: true });
+    });
+  </script>
+% endif
+
+% if bookmarks:
+  <div style="margin-bottom:30px;">
+    <h2>${_('Your Bookmarks')} (${len(bookmarks)})</h2>
+    <ul id="content-slider-bookmarks">
+    % for item in [ content_items[item_id] for item_id in bookmarks ]:
+      % if item['thumbnail']:
+      <%include file="templates/subscription_content/panel.html" args="item=item" />
+      % endif
+    % endfor
+    </ul>
+  </div>
+  <script type="text/javascript">
+    $(window).ready(function() {
+      $("#content-slider-bookmarks").lightSlider({ item: 4, adaptiveHeight: true });
+    });
+  </script>
+% endif
+
+<script type="text/javascript">
+  $(window).ready(function() {
+    $("#content-slider-all").lightSlider({ item: 4, adaptiveHeight: true });
+  });
+</script>
+
+% endif

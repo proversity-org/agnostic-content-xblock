@@ -1,42 +1,16 @@
 /* Javascript for AgnosticContentXBlock. */
-function AgnosticContentXBlock(runtime, element) {
-
-    function updateVotes(votes) {
-        $('.upvote .count', element).text(votes.up);
-        $('.downvote .count', element).text(votes.down);
-    }
-
-    var handlerUrl = runtime.handlerUrl(element, 'vote');
-
-    $('.upvote', element).click(function(eventObject) {
-      $.ajax({
-          type: "POST",
+window.AgnosticContentXBlock = function(runtime, element, args) {
+    var handlerUrl = runtime.handlerUrl(element, 'like');
+    jQuery('.like', element).click(function(e) {
+      jQuery.ajax({
+          type: "GET",
           url: handlerUrl,
-          data: JSON.stringify({voteType: 'up'}),
-          success: updateVotes
+          success: function(data){
+            text = data['likes']+' people liked this.'
+            if(data['liked'])
+              text = parseInt(data['likes']) > 1 ? 'You and '+data['likes']+' others liked this!' : 'You liked this!';
+            $('.like .count', element).text(text);
+          }
       });
     });
-
-    $('.downvote', element).click(function(eventObject) {
-      $.ajax({
-          type: "POST",
-          url: handlerUrl,
-          data: JSON.stringify({voteType: 'down'}),
-          success: updateVotes
-      });
-    });
-
-    var children = runtime.children(element);
-   
-    return {
-
-        initChildren: function(options) {
-            for (var i=0; i < children.length; i++) {
-                var child = children[i];
-                console.log('Hi', child)
-                callIfExists(child, 'init', options);
-            }
-        },
-
-    };
 }

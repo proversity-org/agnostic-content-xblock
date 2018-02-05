@@ -1,0 +1,120 @@
+<%!
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
+from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
+from openedx.core.djangoapps.theming.helpers import get_template_path
+%>
+
+<section role="courses">
+  <div class="container no-border">
+
+    <div id="subscription-content" style="margin-bottom:20px">
+
+      <h1 style="margin-bottom:30px">${_("Explore Content")}</h1>
+
+      % if content_items:
+
+      <link type="text/css" rel="stylesheet" href="/static/lightslider/css/lightslider.css" />
+      <script src="/static/lightslider/js/lightslider.js"></script>
+
+      <style type="text/css">
+        .course-caption h4 { min-height: 40px; }
+        section[role="courses"] .container .grid .single-course { position: relative; }
+        .course-description {max-height:80px;line-height:1.6;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3;}
+      </style>
+
+      % if recommendations:
+      <div style="margin-bottom:30px;">
+        <h2>${_('Recommended for You')}</h2>
+        <ul id="content-slider-recommendations">
+        % for item in [ content_items[item_id] for item_id in recommendations ]:
+          % if item['thumbnail']:
+          <%include file="templates/subscription_content/panel.html" args="item=item" />
+          % endif
+        % endfor
+        </ul>
+      </div>
+      <script type="text/javascript">
+        $(window).ready(function() {
+          $("#content-slider-recommendations").lightSlider({ item: 4, adaptiveHeight: true });
+        });
+      </script>
+      % endif
+
+      % if popular:
+      <div style="margin-bottom:30px;">
+        <h2>${_('Popular')}</h2>
+        <ul id="content-slider-popular">
+        % for item in [ content_items[item_id] for item_id in popular ]:
+          % if item['thumbnail']:
+          <%include file="templates/subscription_content/panel.html" args="item=item" />
+          % endif
+        % endfor
+        </ul>
+      </div>
+      <script type="text/javascript">
+        $(window).ready(function() {
+          $("#content-slider-popular").lightSlider({ item: 4, adaptiveHeight: true });
+        });
+      </script>
+      % endif
+
+      % if bookmarks:
+      <div style="margin-bottom:30px;">
+        <h2>${_('Bookmarked')}</h2>
+        <ul id="content-slider-bookmarks">
+        % for item in [ content_items[item_id] for item_id in bookmarks ]:
+          % if item['thumbnail']:
+          <%include file="templates/subscription_content/panel.html" args="item=item" />
+          % endif
+        % endfor
+        </ul>
+      </div>
+      <script type="text/javascript">
+        $(window).ready(function() {
+          $("#content-slider-bookmarks").lightSlider({ item: 4, adaptiveHeight: true });
+        });
+      </script>
+      % endif
+
+      % if viewed:
+      <div style="margin-bottom:30px;">
+        <h2>${_('Watch Again')}</h2>
+        <ul id="content-slider-viewed">
+        % for item in [ content_items[item_id] for item_id in viewed ]:
+          % if item['thumbnail']:
+          <%include file="templates/subscription_content/panel.html" args="item=item" />
+          % endif
+        % endfor
+        </ul>
+      </div>
+      <script type="text/javascript">
+        $(window).ready(function() {
+          $("#content-slider-viewed").lightSlider({ item: 4, adaptiveHeight: true });
+        });
+      </script>
+      % endif
+
+      % for keyword, items in keywords.iteritems():
+      <div style="margin-bottom:30px;">
+        <h2>${keyword} (${len(items)})</h2>
+        <ul id="content-slider-${keyword.replace(' ', '-').lower()}">
+        % for item in [ content_items[item_id] for item_id in items ]:
+          % if item['thumbnail']:
+          <%include file="templates/subscription_content/panel.html" args="item=item" />
+          % endif
+        % endfor
+        </ul>
+      </div>
+      <script type="text/javascript">
+        $(window).ready(function() {
+          $("#content-slider-${keyword.replace(' ', '-').lower()}").lightSlider({ item: 4, adaptiveHeight: true });
+        });
+      </script>
+      % endfor
+
+    % endif
+
+    </div>
+  </div>
+</section>
