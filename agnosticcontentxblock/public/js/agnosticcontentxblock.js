@@ -3,7 +3,7 @@ window.AgnosticContentXBlock = function(runtime, element, args) {
     var handlerUrl = runtime.handlerUrl(element, 'like');
     jQuery('.like', element).click(function(e) {
       jQuery.ajax({
-          type: "GET",
+          type: "POST",
           url: handlerUrl,
           success: function(data){
             text = data['likes']+' people liked this.'
