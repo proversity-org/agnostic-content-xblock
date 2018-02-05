@@ -50,6 +50,7 @@ def dashboard(request):
         context['viewed'], context['last_viewed'] = get_viewed_items(request, context['content_items'])
         source = context['last_viewed'][0] if context['last_viewed'] is not None else random.choice(context['content_items'].keys())
         context['recommendations'] = get_recommeded_content_items(request, context['content_items'], source)
+        context['recommendations'] += context['bookmarks']
     response = render_to_response('subscription_content/dashboard.html', context)
     set_user_info_cookie(response, request)
     return response

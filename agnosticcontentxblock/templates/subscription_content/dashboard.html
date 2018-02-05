@@ -15,11 +15,12 @@ from django.utils.translation import ugettext as _
 section[role="courses"] .container .grid .single-course { position: relative; }
 </style>
 
-<h1 style="margin-bottom:30px">${_("My Content")}</h1>
+<h1 style="margin-bottom:30px">${_("My Content")}
+  <span><a href="${reverse('subscription_explore')}">${_("View all")}</a></span>
+</h1>
 
 % if recommendations:
   <div style="margin-bottom:30px;">
-    <h2>${_('Recommended for You')} (${len(recommendations)})</h2>
     <ul id="content-slider-recommendations">
     % for item in [ content_items[item_id] for item_id in recommendations ]:
       % if item['thumbnail']:
@@ -31,24 +32,6 @@ section[role="courses"] .container .grid .single-course { position: relative; }
   <script type="text/javascript">
     $(window).ready(function() {
       $("#content-slider-recommendations").lightSlider({ item: 4, adaptiveHeight: true });
-    });
-  </script>
-% endif
-
-% if bookmarks:
-  <div style="margin-bottom:30px;">
-    <h2>${_('Your Bookmarks')} (${len(bookmarks)})</h2>
-    <ul id="content-slider-bookmarks">
-    % for item in [ content_items[item_id] for item_id in bookmarks ]:
-      % if item['thumbnail']:
-      <%include file="templates/subscription_content/panel.html" args="item=item" />
-      % endif
-    % endfor
-    </ul>
-  </div>
-  <script type="text/javascript">
-    $(window).ready(function() {
-      $("#content-slider-bookmarks").lightSlider({ item: 4, adaptiveHeight: true });
     });
   </script>
 % endif
