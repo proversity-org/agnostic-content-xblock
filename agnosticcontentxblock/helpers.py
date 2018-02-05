@@ -176,5 +176,6 @@ def get_viewed_items(request, content_items):
 
 
 def get_popular_items(request, viewed_items):
-    viewed_items.sort(key=lambda x: x.likes, reverse=True)
-    return viewed_items
+    popular = viewed_items.keys()
+    popular.sort(key=lambda x: viewed_items[x].likes, reverse=True)
+    return popular
