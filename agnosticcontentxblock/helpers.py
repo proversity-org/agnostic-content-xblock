@@ -80,7 +80,7 @@ def get_subscription_content_items(request):
                         item['thumbnail'] = item['moduleImage']
                     context['content_items'][item['contentItemId']] = item
             else:
-                log.error("%s\n%s", str(context['message']), str(content_items['message']))
+                log.error("Error fetching content items: %s", str(content_items['message']))
         else:
             log.warning("No subscription products found. Disable subscription?")
     else:
