@@ -9,7 +9,7 @@ from django.conf import settings
 from xmodule.modulestore.django import modulestore
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from openedx.core.djangoapps.bookmarks import api as bookmarks_api
-from openedx.core.djangoapps.content.block_structure.api import get_course_in_cache
+from openedx.core.djangoapps.content.block_structure.api import get_course_in_cache, update_course_in_cache
 from student.views import is_course_blocked, get_org_black_and_whitelist_for_site, get_course_enrollments
 from opaque_keys.edx.keys import CourseKey, UsageKey
 from courseware.user_state_client import DjangoXBlockUserStateClient
