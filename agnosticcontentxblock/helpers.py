@@ -35,7 +35,7 @@ def get_xblock_settings():
 
 
 def get_course_keys(user):
-        site_org_whitelist, site_org_blacklist = get_org_black_and_whitelist_for_site(user)
+        site_org_whitelist, site_org_blacklist = get_org_black_and_whitelist_for_site()
         course_enrollments = list(get_course_enrollments(user, site_org_whitelist, site_org_blacklist))
         course_enrollments.sort(key=lambda x: x.created, reverse=True)
         return [ enrollment.course_id for enrollment in course_enrollments ]
@@ -51,7 +51,7 @@ def get_subscription_catalog_id(course_id, mode):
 
 def get_subscription_catalog_ids(user, course_enrollments=None):
         if not course_enrollments:
-                site_org_whitelist, site_org_blacklist = get_org_black_and_whitelist_for_site(user)
+                site_org_whitelist, site_org_blacklist = get_org_black_and_whitelist_for_site()
                 course_enrollments = list(get_course_enrollments(user, site_org_whitelist, site_org_blacklist))
                 course_enrollments.sort(key=lambda x: x.created, reverse=True)
         subscription_catalog_ids = []
