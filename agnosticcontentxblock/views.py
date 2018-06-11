@@ -10,11 +10,13 @@ from django.http import HttpResponse
 from openedx.core.djangoapps.site_configuration import helpers as configuration_helpers
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.template import TemplateDoesNotExist
 from student.cookies import set_user_info_cookie
 from openedx.core.djangoapps.theming.helpers import get_template_path
 from mako.exceptions import TopLevelLookupException, TemplateLookupException
 from edxmako.shortcuts import render_to_response as mako_render_to_response
 from xblockutils.resources import ResourceLoader
+
 
 from helpers import (
     get_subscription_content_items,
@@ -31,12 +33,12 @@ loader = ResourceLoader(__name__)
 def render_to_response(template_path, context):
     try:
         response = mako_render_to_response(template_path, context)
-    except TopLevelLookupException:
+    except TemplateDoesNotExist:
         try:
             template = loader.render_mako_template(os.path.join('templates/', template_path), context)
             response = HttpResponse(template)
-        except TemplateLookupException as err:
-            log.error("TemplateLookupException: %s", err)
+        except TemplateDoesNotExist as err:
+            log.error("TemplateDoesNotExist: %s", err)
             response = HttpResponse()
     return response
 
